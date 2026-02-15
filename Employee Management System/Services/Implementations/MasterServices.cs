@@ -15,27 +15,24 @@ namespace Employee_Management_System.Services.Implementations
             this.dbSettings = dbSettings;
             this.mongoClient = new MongoClient(dbSettings.ConnectionString);
             this.database = mongoClient.GetDatabase(dbSettings.DatabaseName);
-        }   
+        }
 
-        public async Task<Response> GetDepartment()
+        public async Task<List<Departments>> GetDepartment()
         {
-            var res = new Response();
-            try
-            {
-                var DepartmentCollection  = database.GetCollection<Departments>("Departments");
+            var DepartmentCollection = database.GetCollection<Departments>("Departments");
 
-                var DepartmentList  = await DepartmentCollection.Find(d => true).ToListAsync();
+            var DepartmentList = await DepartmentCollection.Find(d => true).ToListAsync();
 
-                res.Data = DepartmentList;
-                res.Success = true;
-                res.Message = "Department data retrieved successfully.";
-            }
-            catch (Exception ex)
-            {
-                res.Success = false;
-                res.Message = ex.Message;
-            }
-            return res;
+            return DepartmentList;
+        }
+
+        public async Task<List<Roles>> GetRoles()
+        {
+            var RolesCollection = database.GetCollection<Roles>("Roles");
+
+            var RolesList = await RolesCollection.Find(r => true).ToListAsync();
+
+            return RolesList;
         }
     }
 }

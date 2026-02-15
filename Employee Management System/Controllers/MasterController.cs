@@ -42,5 +42,34 @@ namespace Employee_Management_System.Controllers
             return res;
 
         }
+
+        [HttpGet]
+        [Route("GetRoles")]
+        public async Task<Response> GetRoles()
+        {
+            var res = new Response();
+            try
+            {
+                var Data = await masterServices.GetRoles();
+                if (Data != null)
+                {
+                    res.Data = Data;
+                    res.Success = true;
+                    res.Message = "Roles Data retrieved successfully.";
+                }
+                else
+                {
+                    res.Success = false;
+                    res.Message = "Roles Data not retrieves successfully.";
+
+                }
+            }
+            catch(Exception ex)
+            {
+                res.Success = false;
+                res.Message = "Roles Data not retrieves successfully.";
+            }
+            return res;
+        }
     }
 }
