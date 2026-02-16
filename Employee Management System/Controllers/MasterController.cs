@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Employee_Management_System.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class MasterController : Controller
     {
         private readonly IMasterServices masterServices;
@@ -67,7 +66,7 @@ namespace Employee_Management_System.Controllers
             catch(Exception ex)
             {
                 res.Success = false;
-                res.Message = "Roles Data not retrieves successfully.";
+                res.Message = $"Error retrieving Roles data: {ex.Message}";
             }
             return res;
         }

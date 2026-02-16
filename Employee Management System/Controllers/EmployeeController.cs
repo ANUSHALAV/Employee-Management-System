@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Employee_Management_System.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class EmployeeController : Controller
     {
         private readonly IEmployeServices employeeService;
@@ -15,6 +14,7 @@ namespace Employee_Management_System.Controllers
         }
 
         [HttpGet]
+        [Route("GetEmployee")]
         public async Task<Response> GetEmployee()
         {
             var res = new Response();
@@ -37,6 +37,34 @@ namespace Employee_Management_System.Controllers
             {
                 res.Success = false;
                 res.Message = $"Error retrieving employee data: {ex.Message}";
+            }
+            return res;
+        }
+
+        [HttpPost]
+        [Route("AddEmployee")]
+        public async Task<Response> AddEmployee([FromBody] Employees obj)
+        {
+            var res = new Response();
+            try
+            {
+                if (obj != null)
+                {
+                    var Data = await employeeService.AddEmployee(obj);
+                    res.Data = Data;
+                    res.Success = true;
+                    res.Message = "Employe Add successfully.";
+                }
+                else
+                {
+                    res.Success = false;
+                    res.Message = "Employee not Add successfully.";
+                }
+            }
+            catch(Exception ex)
+            {
+                res.Success = false;
+                res.Message = ex.Message;
             }
             return res;
         }
