@@ -16,7 +16,7 @@ namespace Employee_Management_System.Services.Implementations
             this.database = this.mongoClient.GetDatabase(this.dbSettings.DatabaseName);
         }
 
-        public async Task<List<Employees>> GetEmploye()
+        public async Task<List<Employees>> GetEmployeeAsync()
         {
            var employeesCollection = database.GetCollection<Employees>("Employes");
 
@@ -27,7 +27,7 @@ namespace Employee_Management_System.Services.Implementations
             return employesList;
         }
 
-        public async Task<Employees> AddEmployee(Employees obj)
+        public async Task<Employees> AddEmployeeAsync(Employees obj)
         {
             if (obj== null)
             {

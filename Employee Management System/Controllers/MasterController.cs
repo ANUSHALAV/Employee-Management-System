@@ -14,13 +14,13 @@ namespace Employee_Management_System.Controllers
         }
 
         [HttpGet]
-        [Route("GetDeparment")]
-        public async Task<Response> GetDepartment()
+        [Route("GetDepartmentAsync")]
+        public async Task<Response> GetDepartmentAsync()
         {
             var res = new Response();
             try
             {
-                var Data = await masterServices.GetDepartment();
+                var Data = await masterServices.GetDepartmentAsync();
                 if (Data != null)
                 {
                     res.Data = Data;
@@ -43,13 +43,13 @@ namespace Employee_Management_System.Controllers
         }
 
         [HttpGet]
-        [Route("GetRoles")]
-        public async Task<Response> GetRoles()
+        [Route("GetRolesAsync")]
+        public async Task<Response> GetRolesAsync()
         {
             var res = new Response();
             try
             {
-                var Data = await masterServices.GetRoles();
+                var Data = await masterServices.GetRolesAsync();
                 if (Data != null)
                 {
                     res.Data = Data;
@@ -67,6 +67,26 @@ namespace Employee_Management_System.Controllers
             {
                 res.Success = false;
                 res.Message = $"Error retrieving Roles data: {ex.Message}";
+            }
+            return res;
+        }
+
+        [HttpGet]
+        [Route("GetGradesAsync")]
+        public async Task<Response> GetGradesAsync()
+        {
+            var res = new Response();
+            try
+            {
+                var data = await masterServices.GetGradesAsync();
+                res.Data = data;
+                res.Success = true;
+                res.Message = "Grade Data not retrieves successfully.";
+            }
+            catch (Exception ex)
+            {
+                res.Success = false;
+                res.Message = ex.Message;
             }
             return res;
         }

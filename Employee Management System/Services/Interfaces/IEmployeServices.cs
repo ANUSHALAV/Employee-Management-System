@@ -4,8 +4,8 @@ namespace Employee_Management_System.Services.Interfaces
 {
     public interface IEmployeServices
     {
-        public Task<List<Employees>> GetEmploye();
+        public Task<List<Employees>> GetEmployeeAsync();
 
-        public Task<Employees> AddEmployee(Employees obj);
+        public Task<Employees> AddEmployeeAsync(Employees obj);
     }
 }

@@ -17,22 +17,31 @@ namespace Employee_Management_System.Services.Implementations
             this.database = mongoClient.GetDatabase(dbSettings.DatabaseName);
         }
 
-        public async Task<List<Departments>> GetDepartment()
+        public async Task<List<Departments>> GetDepartmentAsync()
         {
-            var DepartmentCollection = database.GetCollection<Departments>("Departments");
+            var departmentCollection = database.GetCollection<Departments>("Departments");
 
-            var DepartmentList = await DepartmentCollection.Find(d => true).ToListAsync();
+            var departmentList = await departmentCollection.Find(d => true).ToListAsync();
 
-            return DepartmentList;
+            return departmentList;
         }
 
-        public async Task<List<Roles>> GetRoles()
+        public async Task<List<Roles>> GetRolesAsync()
         {
-            var RolesCollection = database.GetCollection<Roles>("Roles");
+            var rolesCollection = database.GetCollection<Roles>("Roles");
 
-            var RolesList = await RolesCollection.Find(r => true).ToListAsync();
+            var rolesList = await rolesCollection.Find(r => true).ToListAsync();
 
-            return RolesList;
+            return rolesList;
+        }
+
+        public async Task<List<Grades>> GetGradesAsync()
+        {
+            var gradeCollection = database.GetCollection<Grades>("Grades");
+
+            var gradeList = await gradeCollection.Find(g => g.Status == 1).ToListAsync();
+
+            return gradeList;
         }
     }
 }

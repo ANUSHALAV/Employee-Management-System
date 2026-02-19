@@ -14,13 +14,13 @@ namespace Employee_Management_System.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployee")]
-        public async Task<Response> GetEmployee()
+        [Route("GetEmployeeAsync")]
+        public async Task<Response> GetEmployeeAsync()
         {
             var res = new Response();
             try
             {
-                var Data = await employeeService.GetEmploye();
+                var Data = await employeeService.GetEmployeeAsync();
                 if (Data != null)
                 {
                     res.Data = Data;
@@ -42,15 +42,15 @@ namespace Employee_Management_System.Controllers
         }
 
         [HttpPost]
-        [Route("AddEmployee")]
-        public async Task<Response> AddEmployee([FromBody] Employees obj)
+        [Route("AddEmployeeAsync")]
+        public async Task<Response> AddEmployeeAsync([FromBody] Employees obj)
         {
             var res = new Response();
             try
             {
                 if (obj != null)
                 {
-                    var Data = await employeeService.AddEmployee(obj);
+                    var Data = await employeeService.AddEmployeeAsync(obj);
                     res.Data = Data;
                     res.Success = true;
                     res.Message = "Employe Add successfully.";

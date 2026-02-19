@@ -7,7 +7,7 @@ namespace Employee_Management_System.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string GradeId { get; set; }
+        public string? GradeId { get; set; }
         public string GradeName { get; set; }
         public int Status { get; set; }
     }

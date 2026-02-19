@@ -3,9 +3,11 @@ namespace Employee_Management_System.Services.Interfaces
 {
     public interface IMasterServices
     {
-        public Task<List<Departments>> GetDepartment();
+        public Task<List<Departments>> GetDepartmentAsync();
 
-        public Task<List<Roles>> GetRoles();
+        public Task<List<Roles>> GetRolesAsync();
+
+        public Task<List<Grades>> GetGradesAsync();
 
     }
 }
