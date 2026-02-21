@@ -11,7 +11,7 @@ namespace Employee_Management_System.Controllers
         private readonly IMasterServices _masterServices;
         public MasterController(IMasterServices masterServices)
         {
-            this._masterServices = _masterServices;
+            this._masterServices = masterServices;
         }
 
         [HttpGet]

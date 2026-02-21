@@ -29,16 +29,9 @@ namespace Employee_Management_System.Services.Implementations
 
         public async Task<Employees> AddEmployeeAsync(Employees obj)
         {
-            if (obj== null)
-            {
-                return null;
-            }
-            else
-            {
-                var employeeCollection = _database.GetCollection<Employees>("Employes");
-                await employeeCollection.InsertOneAsync(obj);
-                return obj;
-            }
+            var employeeCollection = _database.GetCollection<Employees>("Employes");
+            await employeeCollection.InsertOneAsync(obj);
+            return obj;
         }
 
         public async Task<List<Employees>> GetEmployeDetailsByIdAsync(string employeId)
