@@ -6,19 +6,19 @@ namespace Employee_Management_System.Services.Implementations
 {
     public class EmployeServices : IEmployeServices
     {
-        private readonly DbSettings dbSettings;
-        private readonly MongoClient mongoClient;
-        private readonly IMongoDatabase database;
-        public EmployeServices(DbSettings _dbSettings)
+        private readonly DbSettings _dbSettings;
+        private readonly MongoClient _mongoClient;
+        private readonly IMongoDatabase _database;
+        public EmployeServices(DbSettings dbSettings)
         {
-            this.dbSettings = _dbSettings;
-            this.mongoClient = new MongoClient(this.dbSettings.ConnectionString);
-            this.database = this.mongoClient.GetDatabase(this.dbSettings.DatabaseName);
+            this._dbSettings = dbSettings;
+            this._mongoClient = new MongoClient(this._dbSettings.ConnectionString);
+            this._database = this._mongoClient.GetDatabase(this._dbSettings.DatabaseName);
         }
 
         public async Task<List<Employees>> GetEmployeeAsync()
         {
-           var employeesCollection = database.GetCollection<Employees>("Employes");
+           var employeesCollection = _database.GetCollection<Employees>("Employes");
 
             var employeesFilter = Builders<Employees>.Filter.Where(e => e.Status == 1);
 
@@ -35,7 +35,7 @@ namespace Employee_Management_System.Services.Implementations
             }
             else
             {
-                var employeeCollection = database.GetCollection<Employees>("Employes");
+                var employeeCollection = _database.GetCollection<Employees>("Employes");
                 await employeeCollection.InsertOneAsync(obj);
                 return obj;
             }
@@ -43,7 +43,7 @@ namespace Employee_Management_System.Services.Implementations
 
         public async Task<List<Employees>> GetEmployeDetailsByIdAsync(string employeId)
         {
-            var employeCollection = database.GetCollection<Employees>("Employes");
+            var employeCollection = _database.GetCollection<Employees>("Employes");
 
             var filter = Builders<Employees>.Filter.Where(emp => emp.Id == employeId);
             

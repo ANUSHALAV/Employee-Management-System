@@ -7,10 +7,10 @@ namespace Employee_Management_System.Controllers
     [ApiController]
     public class EmployeeController : Controller
     {
-        private readonly IEmployeServices employeeService;
-        public EmployeeController(IEmployeServices _employeeService)
+        private readonly IEmployeServices _employeeService;
+        public EmployeeController(IEmployeServices employeeService)
         {
-            this.employeeService = _employeeService;
+            this._employeeService = employeeService;
         }
 
         [HttpGet]
@@ -20,7 +20,7 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var data = await employeeService.GetEmployeeAsync();
+                var data = await _employeeService.GetEmployeeAsync();
                 if (data != null)
                 {
                     res.Data = data;
@@ -50,7 +50,7 @@ namespace Employee_Management_System.Controllers
             {
                 if (obj != null)
                 {
-                    var data = await employeeService.AddEmployeeAsync(obj);
+                    var data = await _employeeService.AddEmployeeAsync(obj);
                     res.Data = data;
                     res.Success = true;
                     res.Message = "Employe Add successfully.";
@@ -76,7 +76,7 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var data = await employeeService.GetEmployeDetailsByIdAsync(employeId);
+                var data = await _employeeService.GetEmployeDetailsByIdAsync(employeId);
 
                 if (data != null)
                 {

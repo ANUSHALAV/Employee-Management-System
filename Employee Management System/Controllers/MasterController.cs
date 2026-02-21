@@ -1,5 +1,6 @@
-﻿using Employee_Management_System.Services.Interfaces;
-using Employee_Management_System.Models;
+﻿using Employee_Management_System.Models;
+using Employee_Management_System.Services.Implementations;
+using Employee_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Employee_Management_System.Controllers
@@ -7,10 +8,10 @@ namespace Employee_Management_System.Controllers
     [ApiController]
     public class MasterController : Controller
     {
-        private readonly IMasterServices masterServices;
-        public MasterController(IMasterServices _masterServices)
+        private readonly IMasterServices _masterServices;
+        public MasterController(IMasterServices masterServices)
         {
-            this.masterServices = _masterServices;
+            this._masterServices = _masterServices;
         }
 
         [HttpGet]
@@ -20,7 +21,7 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var data = await masterServices.GetDepartmentAsync();
+                var data = await _masterServices.GetDepartmentAsync();
                 if (data != null)
                 {
                     res.Data = data;
@@ -49,7 +50,7 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var data = await masterServices.GetRolesAsync();
+                var data = await _masterServices.GetRolesAsync();
                 if (data != null)
                 {
                     res.Data = data;
@@ -78,7 +79,7 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var data = await masterServices.GetGradesAsync();
+                var data = await _masterServices.GetGradesAsync();
                 res.Data = data;
                 res.Success = true;
                 res.Message = "Grade Data not retrieves successfully.";
