@@ -20,10 +20,10 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var Data = await masterServices.GetDepartmentAsync();
-                if (Data != null)
+                var data = await masterServices.GetDepartmentAsync();
+                if (data != null)
                 {
-                    res.Data = Data;
+                    res.Data = data;
                     res.Success = true;
                     res.Message = "Department data retrieved successfully.";
                 }
@@ -49,10 +49,10 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var Data = await masterServices.GetRolesAsync();
-                if (Data != null)
+                var data = await masterServices.GetRolesAsync();
+                if (data != null)
                 {
-                    res.Data = Data;
+                    res.Data = data;
                     res.Success = true;
                     res.Message = "Roles Data retrieved successfully.";
                 }

@@ -40,5 +40,16 @@ namespace Employee_Management_System.Services.Implementations
                 return obj;
             }
         }
+
+        public async Task<List<Employees>> GetEmployeDetailsByIdAsync(string employeId)
+        {
+            var employeCollection = database.GetCollection<Employees>("Employes");
+
+            var filter = Builders<Employees>.Filter.Where(emp => emp.Id == employeId);
+            
+            var employeData  = await employeCollection.Find(filter).ToListAsync();
+
+            return employeData;
+        }
     }
 }

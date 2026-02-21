@@ -20,10 +20,10 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                var Data = await employeeService.GetEmployeeAsync();
-                if (Data != null)
+                var data = await employeeService.GetEmployeeAsync();
+                if (data != null)
                 {
-                    res.Data = Data;
+                    res.Data = data;
                     res.Success = true;
                     res.Message = "Employee data retrieved successfully.";
                 }
@@ -50,8 +50,8 @@ namespace Employee_Management_System.Controllers
             {
                 if (obj != null)
                 {
-                    var Data = await employeeService.AddEmployeeAsync(obj);
-                    res.Data = Data;
+                    var data = await employeeService.AddEmployeeAsync(obj);
+                    res.Data = data;
                     res.Success = true;
                     res.Message = "Employe Add successfully.";
                 }
@@ -61,10 +61,39 @@ namespace Employee_Management_System.Controllers
                     res.Message = "Employee not Add successfully.";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 res.Success = false;
                 res.Message = ex.Message;
+            }
+            return res;
+        }
+
+        [HttpGet]
+        [Route("GetEmployeDetailsByIdAsync")]
+        public async Task<Response> GetEmployeDetailsByIdAsync(string employeId)
+        {
+            var res = new Response();
+            try
+            {
+                var data = await employeeService.GetEmployeDetailsByIdAsync(employeId);
+
+                if (data != null)
+                {
+                    res.Data = data;
+                    res.Success = true;
+                    res.Message = "Employee Details get successfully.";
+                }
+                else
+                {
+                    res.Success = true;
+                    res.Message = "Employee Details not get successfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+                res.Success = false;
+                res.Message = "Employee Details not get successfully.";
             }
             return res;
         }

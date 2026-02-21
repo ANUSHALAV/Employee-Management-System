@@ -7,5 +7,7 @@ namespace Employee_Management_System.Services.Interfaces
         public Task<List<Employees>> GetEmployeeAsync();
 
         public Task<Employees> AddEmployeeAsync(Employees obj);
+
+        public Task<List<Employees>> GetEmployeDetailsByIdAsync(string employeId);
     }
 }
