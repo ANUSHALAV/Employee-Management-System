@@ -8,6 +8,6 @@ namespace Employee_Management_System.Services.Interfaces
 
         public Task<Employees> AddEmployeeAsync(Employees obj);
 
-        public Task<List<Employees>> GetEmployeDetailsByIdAsync(string employeId);
+        public Task<EmployeeDetailDto> GetEmployeDetailsByIdAsync(string employeId);
     }
 }

@@ -18,7 +18,7 @@ namespace Employee_Management_System.Services.Implementations
 
         public async Task<List<Employees>> GetEmployeeAsync()
         {
-           var employeesCollection = _database.GetCollection<Employees>("Employes");
+            var employeesCollection = _database.GetCollection<Employees>("Employes");
 
             var employeesFilter = Builders<Employees>.Filter.Where(e => e.Status == 1);
 
@@ -34,15 +34,44 @@ namespace Employee_Management_System.Services.Implementations
             return obj;
         }
 
-        public async Task<List<Employees>> GetEmployeDetailsByIdAsync(string employeId)
+        public async Task<EmployeeDetailDto> GetEmployeDetailsByIdAsync(string employeId)
         {
             var employeCollection = _database.GetCollection<Employees>("Employes");
+            var departmentCollection = _database.GetCollection<Departments>("Departments");
 
-            var filter = Builders<Employees>.Filter.Where(emp => emp.Id == employeId);
-            
-            var employeData  = await employeCollection.Find(filter).ToListAsync();
+            var employeefilter = Builders<Employees>.Filter.Where(emp => emp.Id == employeId);
 
-            return employeData;
+            var employeData = await employeCollection.Find(employeefilter).FirstOrDefaultAsync();
+
+            if (employeData == null)
+            {
+                return null;
+            }
+
+            var employeDepartmentId = employeData.DepartmentId;
+
+            var departmentFilter = Builders<Departments>.Filter.Where(d => d.DepartmentId == employeDepartmentId);
+
+            var departmentData = await departmentCollection.Find(departmentFilter).FirstOrDefaultAsync();
+
+            if (departmentData == null)
+            {
+                return null;
+            }
+
+            return new EmployeeDetailDto
+            {
+
+                Id = employeData.Id,
+                Name = employeData.Name,
+                Email = employeData.Email,
+                Gender = employeData.Gender,
+                Address = employeData.Address,
+                DateOfBirth = employeData.DateOfBirth,
+                DepartmentId = departmentData.DepartmentId,
+                DepartmentName = departmentData.DepartmentName,
+                Status = employeData.Status
+            };
         }
     }
 }
