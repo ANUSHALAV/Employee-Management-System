@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Employee_Management_System.Controllers
 {
     [ApiController]
-    public class EmployeeController : Controller
+    [Route("api/[controller]")]
+    public class EmployeeController : ControllerBase
     {
         private readonly IEmployeServices _employeeService;
         public EmployeeController(IEmployeServices employeeService)
@@ -14,8 +15,7 @@ namespace Employee_Management_System.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployeeAsync")]
-        public async Task<Response> GetEmployeeAsync()
+        public async Task<IActionResult> GetEmployeeAsync()
         {
             var res = new Response();
             try
@@ -26,24 +26,25 @@ namespace Employee_Management_System.Controllers
                     res.Data = data;
                     res.Success = true;
                     res.Message = "Employee data retrieved successfully.";
+                    return Ok(res);
                 }
                 else
                 {
                     res.Success = true;
                     res.Message = "Employee data not retrieved successfully.";
+                    return NotFound(res);
                 }
             }
             catch (Exception ex)
             {
                 res.Success = false;
                 res.Message = $"Error retrieving employee data: {ex.Message}";
+                return BadRequest(res);
             }
-            return res;
         }
 
         [HttpPost]
-        [Route("AddEmployeeAsync")]
-        public async Task<Response> AddEmployeeAsync([FromBody] Employees obj)
+        public async Task<IActionResult> AddEmployeeAsync([FromBody] CreateEmployeeDTO obj)
         {
             var res = new Response();
             try
@@ -56,35 +57,37 @@ namespace Employee_Management_System.Controllers
                         res.Data = data;
                         res.Success = true;
                         res.Message = "Employe Add successfully.";
+                        return Ok(res);
                     }
                     else
                     {
                         res.Success = false;
                         res.Message = "Some thing wrong.";
+                        return BadRequest(res);
                     }
                 }
                 else
                 {
                     res.Success = false;
                     res.Message = "Employee not Add successfully.";
+                    return BadRequest(res);
                 }
             }
             catch (Exception ex)
             {
                 res.Success = false;
                 res.Message = ex.Message;
+                return BadRequest(res);
             }
-            return res;
         }
 
-        [HttpGet]
-        [Route("GetEmployeDetailsByIdAsync")]
-        public async Task<Response> GetEmployeDetailsByIdAsync(string employeId)
+        [HttpGet("{employeId}")]
+        public async Task<IActionResult> GetEmployeDetailsByIdAsync(string employeId)
         {
             var res = new Response();
             try
             {
-                if (!string.IsNullOrWhiteSpace( employeId))
+                if (!string.IsNullOrWhiteSpace(employeId))
                 {
                     var data = await _employeeService.GetEmployeDetailsByIdAsync(employeId);
 
@@ -93,11 +96,13 @@ namespace Employee_Management_System.Controllers
                         res.Data = data;
                         res.Success = true;
                         res.Message = "Employee Details get successfully.";
+                        return Ok(res);
                     }
                     else
                     {
                         res.Success = false;
                         res.Message = "Employee Details not get successfully.";
+                        return NotFound(res);
 
                     }
                 }
@@ -105,6 +110,7 @@ namespace Employee_Management_System.Controllers
                 {
                     res.Success = false;
                     res.Message = "Employee Id null.";
+                    return BadRequest(res);
                 }
 
             }
@@ -112,8 +118,8 @@ namespace Employee_Management_System.Controllers
             {
                 res.Success = false;
                 res.Message = ex.Message;
+                return BadRequest(res);
             }
-            return res;
         }
     }
 }

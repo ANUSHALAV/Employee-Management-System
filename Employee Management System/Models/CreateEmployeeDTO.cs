@@ -3,12 +3,8 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Employee_Management_System.Models
 {
-    [BsonIgnoreExtraElements]
-    public class Employees
+    public class CreateEmployeeDTO
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
         public string EmployeeId { get; set; }
         public string Title { get; set; }
         public string Name { get; set; }
@@ -20,7 +16,6 @@ namespace Employee_Management_System.Models
         public string DepartmentId { get; set; }
         public string? RoleId { get; set; }
         public string? GradeId { get; set; }
-        public string Password { get; set; }
-        public int Status { get; set; }
+        public string? Password { get; set; }
     }
 }

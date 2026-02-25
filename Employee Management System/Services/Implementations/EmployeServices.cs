@@ -16,7 +16,7 @@ namespace Employee_Management_System.Services.Implementations
             this._database = this._mongoClient.GetDatabase(this._dbSettings.DatabaseName);
         }
 
-        public async Task<List<Employees>> GetEmployeeAsync()
+        public async Task<List<ResponseEmployeeDTO>> GetEmployeeAsync()
         {
             var employeesCollection = _database.GetCollection<Employees>("Employes");
 
@@ -24,13 +24,28 @@ namespace Employee_Management_System.Services.Implementations
 
             var employesList = await employeesCollection.Find(employeesFilter).ToListAsync();
 
-            return employesList;
+            return employesList.Select(e=>new ResponseEmployeeDTO
+            {
+                Id = e.Id,
+                EmployeeId = e.EmployeeId,
+                Name = e.Name,
+                Title = e.Title
+
+            }).ToList();
         }
 
-        public async Task<Employees> AddEmployeeAsync(Employees obj)
+        public async Task<CreateEmployeeDTO> AddEmployeeAsync(CreateEmployeeDTO obj)
         {
             var employeeCollection = _database.GetCollection<Employees>("Employes");
-            await employeeCollection.InsertOneAsync(obj);
+            var employee = new Employees
+            {
+                EmployeeId = obj.EmployeeId,
+                Name = obj.Name,
+                Title = obj.Title,
+                Gender = obj.Gender,
+                Status = 1
+            };
+            await employeeCollection.InsertOneAsync(employee);
             return obj;
         }
 
