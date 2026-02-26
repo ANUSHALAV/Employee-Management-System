@@ -16,6 +16,6 @@ namespace Employee_Management_System.Models
         public string DepartmentId { get; set; }
         public string? RoleId { get; set; }
         public string? GradeId { get; set; }
-        public string? Password { get; set; }
+        public string Password { get; set; }
     }
 }

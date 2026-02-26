@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Employee_Management_System.Controllers
 {
     [ApiController]
-    public class MasterController : Controller
+    [Route("api/[controller]")]
+    public class MasterController : ControllerBase
     {
         private readonly IMasterServices _masterServices;
         public MasterController(IMasterServices masterServices)
@@ -14,8 +15,7 @@ namespace Employee_Management_System.Controllers
             this._masterServices = masterServices;
         }
 
-        [HttpGet]
-        [Route("GetDepartmentAsync")]
+        [HttpGet("departments")]
         public async Task<Response> GetDepartmentAsync()
         {
             var res = new Response();
@@ -43,8 +43,7 @@ namespace Employee_Management_System.Controllers
 
         }
 
-        [HttpGet]
-        [Route("GetRolesAsync")]
+        [HttpGet("roles")]
         public async Task<Response> GetRolesAsync()
         {
             var res = new Response();
@@ -72,8 +71,7 @@ namespace Employee_Management_System.Controllers
             return res;
         }
 
-        [HttpGet]
-        [Route("GetGradesAsync")]
+        [HttpGet("grades")]
         public async Task<Response> GetGradesAsync()
         {
             var res = new Response();

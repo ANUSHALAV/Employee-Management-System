@@ -29,8 +29,16 @@ namespace Employee_Management_System.Services.Implementations
                 Id = e.Id,
                 EmployeeId = e.EmployeeId,
                 Name = e.Name,
-                Title = e.Title
-
+                Title = e.Title,
+                Gender=e.Gender,
+                Email=e.Email,
+                Phone=e.Phone,
+                Address=e.Address,
+                DateOfBirth=e.DateOfBirth,
+                DepartmentId=e.DepartmentId,
+                RoleId=e.RoleId,
+                GradeId=e.GradeId,
+                Status=e.Status
             }).ToList();
         }
 
@@ -42,7 +50,15 @@ namespace Employee_Management_System.Services.Implementations
                 EmployeeId = obj.EmployeeId,
                 Name = obj.Name,
                 Title = obj.Title,
+                Email = obj.Email,
                 Gender = obj.Gender,
+                Address = obj.Address,
+                DateOfBirth = obj.DateOfBirth,
+                DepartmentId = obj.DepartmentId,
+                RoleId = obj.RoleId,
+                GradeId = obj.GradeId,
+                Phone = obj.Phone,
+                Password=obj.Password,
                 Status = 1
             };
             await employeeCollection.InsertOneAsync(employee);
@@ -53,6 +69,8 @@ namespace Employee_Management_System.Services.Implementations
         {
             var employeCollection = _database.GetCollection<Employees>("Employes");
             var departmentCollection = _database.GetCollection<Departments>("Departments");
+            var roleCollection = _database.GetCollection<Roles>("Roles");
+            var gradeCollection = _database.GetCollection<Grades>("Grades");
 
             var employeefilter = Builders<Employees>.Filter.Where(emp => emp.Id == employeId);
 
@@ -64,10 +82,17 @@ namespace Employee_Management_System.Services.Implementations
             }
 
             var employeDepartmentId = employeData.DepartmentId;
-
             var departmentFilter = Builders<Departments>.Filter.Where(d => d.DepartmentId == employeDepartmentId);
-
             var departmentData = await departmentCollection.Find(departmentFilter).FirstOrDefaultAsync();
+
+            var roleId = employeData.RoleId;
+            var roleFilter = Builders<Roles>.Filter.Where(r => r.RoleId == roleId);
+            var roleData = await roleCollection.Find(roleFilter).FirstOrDefaultAsync();
+
+            var gradeId = employeData.GradeId;
+            var gradeFilter = Builders<Grades>.Filter.Where(g => g.GradeId == gradeId);
+            var gradeData = await gradeCollection.Find(gradeFilter).FirstOrDefaultAsync();
+
 
             if (departmentData == null)
             {
@@ -78,13 +103,19 @@ namespace Employee_Management_System.Services.Implementations
             {
 
                 Id = employeData.Id,
+                EmployeeId = employeData.EmployeeId,
+                Title = employeData.Title,
                 Name = employeData.Name,
                 Email = employeData.Email,
                 Gender = employeData.Gender,
                 Address = employeData.Address,
                 DateOfBirth = employeData.DateOfBirth,
-                DepartmentId = departmentData.DepartmentId,
-                DepartmentName = departmentData.DepartmentName,
+                DepartmentId = departmentData?.DepartmentId,
+                DepartmentName = departmentData?.DepartmentName,
+                RoleId = roleData?.RoleId,
+                RoleName = roleData?.RoleName,
+                GradeId = gradeData?.GradeId,
+                GradeName = gradeData?.GradeName,
                 Status = employeData.Status
             };
         }

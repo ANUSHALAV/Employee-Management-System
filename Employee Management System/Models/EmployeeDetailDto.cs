@@ -3,6 +3,8 @@
     public class EmployeeDetailDto
     {
         public string Id { get; set; }
+        public string EmployeeId { get; set; }
+        public string Title { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Gender { get; set; }
@@ -10,6 +12,10 @@
         public DateTime DateOfBirth { get; set; }
         public string DepartmentId { get; set; }
         public string DepartmentName { get; set; }
+        public string RoleName { get; set; }
+        public string RoleId { get; set; }
+        public string GradeId { get; set; }
+        public string GradeName { get; set; }
         public int Status { get; set; }
     }
 }
