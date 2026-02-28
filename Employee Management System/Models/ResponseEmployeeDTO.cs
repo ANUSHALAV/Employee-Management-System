@@ -11,9 +11,12 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-        public string DepartmentId { get; set; }
+        public string? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
         public string? RoleId { get; set; }
+        public string? RoleName { get; set; }
         public string? GradeId { get; set; }
+        public string? GradeName { get; set; }
         public int Status { get; set; }
     }
 }

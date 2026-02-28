@@ -4,10 +4,11 @@ namespace Employee_Management_System.Services.Interfaces
 {
     public interface IEmployeServices
     {
+        public Task<ResponseLoginDTO> Login(LoginDTO obj);
         public Task<List<ResponseEmployeeDTO>> GetEmployeeAsync();
 
         public Task<CreateEmployeeDTO> AddEmployeeAsync(CreateEmployeeDTO obj);
 
-        public Task<EmployeeDetailDto> GetEmployeDetailsByIdAsync(string employeId);
+        public Task<ResponseEmployeeDTO> GetEmployeDetailsByIdAsync(string employeId);
     }
 }
