@@ -1,7 +1,12 @@
 ﻿using Employee_Management_System.Models;
 using Employee_Management_System.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks.Dataflow;
 
 namespace Employee_Management_System.Services.Implementations
@@ -11,11 +16,13 @@ namespace Employee_Management_System.Services.Implementations
         private readonly DbSettings _dbSettings;
         private readonly MongoClient _mongoClient;
         private readonly IMongoDatabase _database;
-        public EmployeServices(DbSettings dbSettings)
+        private readonly JWTSettings _jwtSettings;
+        public EmployeServices(DbSettings dbSettings, JWTSettings jwtSettings)
         {
             this._dbSettings = dbSettings;
             this._mongoClient = new MongoClient(this._dbSettings.ConnectionString);
             this._database = this._mongoClient.GetDatabase(this._dbSettings.DatabaseName);
+            this._jwtSettings = jwtSettings;
         }
 
         public async Task<ResponseLoginDTO> Login(LoginDTO obj)
@@ -36,11 +43,12 @@ namespace Employee_Management_System.Services.Implementations
             ResponseLoginDTO responce;
             if (result == PasswordVerificationResult.Success)
             {
+                var token = this.TokenGenerater(employeeData.EmployeeId);
                 responce = new ResponseLoginDTO
                 {
                     EmployeeId = employeeData.EmployeeId,
                     RoleId = employeeData.RoleId,
-                    Token = "7897987897"
+                    Token = token
                 };
             }
             else
@@ -183,5 +191,32 @@ namespace Employee_Management_System.Services.Implementations
                 Status = employeData.Status
             };
         }
+
+
+
+
+        #region JWT Token Generater
+        public string TokenGenerater(string userId)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId),
+            };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(_jwtSettings.ExpiryInMinutes),
+                signingCredentials: creds
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Employee_Management_System.Models;
 using Employee_Management_System.Services.Implementations;
 using Employee_Management_System.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Employee_Management_System.Controllers
@@ -17,6 +18,7 @@ namespace Employee_Management_System.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("departments")]
         public async Task<Response> GetDepartmentAsync()
         {
@@ -48,6 +50,7 @@ namespace Employee_Management_System.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("roles")]
         public async Task<Response> GetRolesAsync()
         {
@@ -79,6 +82,7 @@ namespace Employee_Management_System.Controllers
             return res;
         }
 
+        [Authorize]
         [HttpGet("grades")]
         public async Task<Response> GetGradesAsync()
         {

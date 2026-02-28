@@ -1,5 +1,6 @@
 ﻿using Employee_Management_System.Models;
 using Employee_Management_System.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Employee_Management_System.Controllers
@@ -22,31 +23,21 @@ namespace Employee_Management_System.Controllers
             var res = new Response();
             try
             {
-                if (obj != null)
+                var data = await _employeeService.Login(obj);
+                if (data != null)
                 {
-                    var data = await _employeeService.Login(obj);
-                    if (data != null)
-                    {
-                        res.Data = data;
-                        res.Success = true;
-                        res.Message = "Login successfully.";
-                        _logger.LogInformation("Login successful for EmployeeId: {EmployeeId}", obj.EmployeeId);
-                        return Ok(res);
-                    }
-                    else
-                    {
-                        res.Success = false;
-                        res.Message = "Login not successfully.";
-                        _logger.LogWarning("Login failed for EmployeeId: {EmployeeId}", obj.EmployeeId);
-                        return NotFound(res);
-                    }
+                    res.Data = data;
+                    res.Success = true;
+                    res.Message = "Login successfully.";
+                    _logger.LogInformation("Login successful for EmployeeId: {EmployeeId}", obj.EmployeeId);
+                    return Ok(res);
                 }
                 else
                 {
                     res.Success = false;
                     res.Message = "Login not successfully.";
-                    _logger.LogWarning("Login failed due to null LoginDTO object.");
-                    return BadRequest(res);
+                    _logger.LogWarning("Login failed for EmployeeId: {EmployeeId}", obj.EmployeeId);
+                    return Unauthorized(res);
                 }
             }
             catch (Exception ex)
@@ -54,11 +45,11 @@ namespace Employee_Management_System.Controllers
                 res.Success = false;
                 res.Message = ex.Message;
                 _logger.LogError(ex, "Error in Login for EmployeeId: {EmployeeId}", obj?.EmployeeId);
-                return BadRequest(res);
+                return StatusCode(500, res);
             }
         }
 
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetEmployeeAsync()
         {
@@ -91,6 +82,7 @@ namespace Employee_Management_System.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddEmployeeAsync([FromBody] CreateEmployeeDTO obj)
         {
@@ -133,6 +125,7 @@ namespace Employee_Management_System.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{employeId}")]
         public async Task<IActionResult> GetEmployeDetailsByIdAsync(string employeId)
         {
